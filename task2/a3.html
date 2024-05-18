@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('a12.jpeg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      text-align: center;
+      color: #070997;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 100px auto;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    .input-container > * {
+      margin-bottom: 10px;
+    }
+
+    .input-container input,
+    .input-container select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    #add-task-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #5cb85c;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #add-task-button:hover {
+      background-color: #4cae4c;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    li.completed {
+      text-decoration: line-through;
+      color: #888;
+    }
+
+    button.delete-button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #d9534f;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button.delete-button:hover {
+      background-color: #c9302c;
+    }
+
+    .task-details {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>To-Do List</h1>
+    <div class="input-container">
+      <input type="text" id="new-task" placeholder="Add a new task...">
+      <input type="date" id="task-date">
+      <select id="task-priority">
+        <option value="Low">Low Priority</option>
+        <option value="Medium">Medium Priority</option>
+        <option value="High">High Priority</option>
+      </select>
+      <button id="add-task-button">Add</button>
+    </div>
+    <ul id="task-list"></ul>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const addTaskButton = document.getElementById('add-task-button');
+      const newTaskInput = document.getElementById('new-task');
+      const taskDateInput = document.getElementById('task-date');
+      const taskPrioritySelect = document.getElementById('task-priority');
+      const taskList = document.getElementById('task-list');
+
+      addTaskButton.addEventListener('click', addTask);
+
+      function addTask() {
+        const taskText = newTaskInput.value.trim();
+        const taskDate = taskDateInput.value;
+        const taskPriority = taskPrioritySelect.value;
+
+        if (taskText !== '' && taskDate !== '') {
+          const listItem = document.createElement('li');
+
+          const taskDetails = document.createElement('div');
+          taskDetails.className = 'task-details';
+          taskDetails.innerHTML = `<span>${taskText}</span><span>${taskDate}</span><span>${taskPriority}</span>`;
+
+          const deleteButton = document.createElement('button');
+          deleteButton.textContent = 'Delete';
+          deleteButton.classList.add('delete-button');
+          deleteButton.addEventListener('click', () => {
+            taskList.removeChild(listItem);
+          });
+
+          listItem.appendChild(taskDetails);
+          listItem.appendChild(deleteButton);
+          listItem.addEventListener('click', () => {
+            listItem.classList.toggle('completed');
+          });
+
+          taskList.appendChild(listItem);
+          newTaskInput.value = '';
+          taskDateInput.value = '';
+          taskPrioritySelect.value = 'Low';
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
